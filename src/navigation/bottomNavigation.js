@@ -1,14 +1,14 @@
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import React from 'react';
-import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
-import {MaterialCommunityIcons} from 'react-native-vector-icons';
-import Home from '../screen/Home';
-const Tab = createMaterialBottomTabNavigator();
+import HomeScreen from '../screen/Home';
+import {NavigationContainer} from '@react-navigation/native';
+
+const Tab = createBottomTabNavigator();
 
 function MyTabs() {
   return (
     <Tab.Navigator>
-      <Tab.Screen name="Home" component={Home} />
-      <Tab.Screen name="Settings" component={Home} />
+      <Tab.Screen name="Home" component={HomeScreen} />
     </Tab.Navigator>
   );
 }
