@@ -2,11 +2,51 @@ import React, {Component, Children} from 'react';
 import {Text, View, FlatList} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import * as firebase from 'firebase';
+import User from '../../User';
+import {Left, Body, List, ListItem, Thumbnail} from 'native-base';
 
 export default class Home extends Component {
-  state = {
-    users: [],
-    dbref: firebase.database.ref('users'),
+  constructor() {
+    super();
+    this.state = {
+      users: [],
+      dbRef: firebase.database().ref('users'),
+    };
+  }
+
+  // state = {
+  //   users: [],
+  //   dbref: firebase.database().ref('users'),
+  // };
+  componentDidMount() {
+    this.state.dbRef.on('child_added', val => {
+      let person = val.val();
+      person.Pin = val.key;
+      if (person.Pin === User.phone) {
+        User.name = person.name;
+      } else {
+        this.setState(prevState => {
+          return {
+            users: [...prevState.users, person],
+          };
+        });
+      }
+    });
+  }
+
+  randerRow = ({item}) => {
+    return (
+      <List key={item.id}>
+        <ListItem avatar>
+          <Body>
+            <TouchableOpacity
+              onPress={() => this.props.navigation.navigate('Chat', item)}>
+              <Text>{item.username}</Text>
+            </TouchableOpacity>
+          </Body>
+        </ListItem>
+      </List>
+    );
   };
   render() {
     return (
@@ -34,25 +74,9 @@ export default class Home extends Component {
         </View>
         <View style={{flex: 1}}>
           <FlatList
-            onPress={() => this.props.navigation.navigate('Chat')}
-            data={[
-              {key: 'Devin'},
-              {key: 'Dan'},
-              {key: 'Dominic'},
-              {key: 'Jackson'},
-              {key: 'James'},
-              {key: 'Joel'},
-              {key: 'John'},
-              {key: 'Jillian'},
-              {key: 'Jimmy'},
-              {key: 'Julie'},
-            ]}
-            renderItem={({item}) => (
-              <TouchableOpacity
-                onPress={() => this.props.navigation.navigate('Chat', item)}>
-                <Text style={styles.item}>{item.key}</Text>
-              </TouchableOpacity>
-            )}
+            data={this.state.users}
+            renderItem={this.randerRow}
+            keyExtractor={item => item.phone}
           />
         </View>
       </View>
