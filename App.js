@@ -3,7 +3,8 @@ import * as React from 'react';
 import Navigate from './src/navigation/Navigat';
 import BtmNavigate from './src/navigation/BottomNavigation';
 // const Stack = createStackNavigator();
-
+import Login from './src/screen/Login';
+import Home from './src/screen/Home';
 function App() {
   return <Navigate />;
 }
