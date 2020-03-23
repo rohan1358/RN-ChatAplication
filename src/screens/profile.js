@@ -36,7 +36,6 @@ export default class profile extends Component {
   }
 
   componentDidMount() {
-    console.log(this.state.avatarSource);
     AsyncStorage.getItem('dataUser', (err, result) => {
       console.warn('result', result);
       console.warn('err', err);
@@ -72,15 +71,28 @@ export default class profile extends Component {
       .ref()
       .update(updates);
   }
-  writeUserData(description) {
-    firebase
+  writeUserData = () => {
+    const {data} = this.state;
+    console.warn('ini', data);
+    var postData = {
+      username: data.username,
+      pin: data.pin,
+      password: data.password,
+      image: this.state.avatarSource.uri,
+    };
+    const newPostKey = firebase
       .database()
-      .ref('users/' + this.state.data.pin)
-      .set({
-        description: description,
-      });
-    this.setModalVisible(!this.state.modalVisible);
-  }
+      .ref('users')
+      .child()
+      .push().key;
+    var updates = {};
+    updates['/users/' + newPostKey] = postData;
+    updates['/users-posts/' + data.pin + '/' + newPostKey] = postData;
+    return firebase
+      .database()
+      .ref()
+      .update(updates);
+  };
 
   logout = async () => {
     await AsyncStorage.clear();
@@ -89,7 +101,6 @@ export default class profile extends Component {
   };
 
   image() {
-    console.log('image');
     const options = {
       title: 'Select Avatar',
       customButtons: [{name: 'fb', title: 'Choose Photo from Facebook'}],
@@ -118,6 +129,18 @@ export default class profile extends Component {
         });
       }
     });
+    const {data} = this.state;
+    // const pin = JSON.parse(data).phone;
+    console.warn('ini :', data.pin);
+    firebase
+      .database()
+      .ref('users/' + data.pin)
+      .set({
+        username: 'test',
+        pin: data.pin,
+        password: data.password,
+        image: this.state.avatarSource,
+      });
   }
 
   render() {
@@ -133,14 +156,16 @@ export default class profile extends Component {
         </View>
         <View style={styles.header}>
           <View style={styles.img}>
-            <Thumbnail large source={this.state.avatarSource} />
+            <TouchableOpacity onPress={() => this.image()}>
+              <Thumbnail large source={this.state.avatarSource} />
+            </TouchableOpacity>
           </View>
         </View>
         <View>
           <View style={styles.name}>
             <View style={styles.tmbname}>
               <TouchableOpacity onPress={() => this.image()}>
-                <Thumbnail small source={require('../../assests/person.png')} />
+                <Thumbnail small source={this.state.avatarSource} />
               </TouchableOpacity>
             </View>
             <View>
