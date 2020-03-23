@@ -15,6 +15,7 @@ import {Thumbnail, Right} from 'native-base';
 import firebase from 'firebase';
 import {TouchableOpacity, TextInput} from 'react-native-gesture-handler';
 import User from '../../User';
+import ImagePicker from 'react-native-image-picker';
 // import { SafeAreaView } from 'react-navigation';
 
 export default class profile extends Component {
@@ -27,6 +28,7 @@ export default class profile extends Component {
     data: {},
     modalVisible: false,
     description: '',
+    avatarSource: null,
   };
 
   setModalVisible(visible) {
@@ -34,26 +36,12 @@ export default class profile extends Component {
   }
 
   componentDidMount() {
+    console.log(this.state.avatarSource);
     AsyncStorage.getItem('dataUser', (err, result) => {
       console.warn('result', result);
       console.warn('err', err);
       if (result) {
         this.setState({data: JSON.parse(result)});
-        // var dataUser = firebase.database().ref('users');
-        // console.warn(dataUser);
-        // dataUser.once('value', res => {
-        //   res.forEach(dataUserLoop => {
-        //     if (dataUserLoop.key === result) {
-        //       this.setState({nama: dataUserLoop});
-        //     }
-
-        //     console.warn(dataUserLoop);
-        //     console.warn(result);
-        //     console.warn(dataUserLoop.key);
-
-        //     return;
-        //   });
-        // });
       }
     });
     // dataUser.on('child_added', val => {
@@ -99,6 +87,39 @@ export default class profile extends Component {
     this.props.navigation.navigate('Login');
     // console.log('hello');
   };
+
+  image() {
+    console.log('image');
+    const options = {
+      title: 'Select Avatar',
+      customButtons: [{name: 'fb', title: 'Choose Photo from Facebook'}],
+      storageOptions: {
+        skipBackup: true,
+        path: 'images',
+      },
+    };
+    ImagePicker.showImagePicker(options, response => {
+      console.log('Response = ', response);
+
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      } else if (response.customButton) {
+        console.log('User tapped custom button: ', response.customButton);
+      } else {
+        const source = {uri: response.uri};
+
+        // You can also display the image using data:
+        // const source = { uri: 'data:image/jpeg;base64,' + response.data };
+
+        this.setState({
+          avatarSource: source,
+        });
+      }
+    });
+  }
+
   render() {
     const {data} = this.state;
 
@@ -112,13 +133,15 @@ export default class profile extends Component {
         </View>
         <View style={styles.header}>
           <View style={styles.img}>
-            <Thumbnail large source={require('../../assests/person.png')} />
+            <Thumbnail large source={this.state.avatarSource} />
           </View>
         </View>
         <View>
           <View style={styles.name}>
             <View style={styles.tmbname}>
-              <Thumbnail small source={require('../../assests/person.png')} />
+              <TouchableOpacity onPress={() => this.image()}>
+                <Thumbnail small source={require('../../assests/person.png')} />
+              </TouchableOpacity>
             </View>
             <View>
               <Text>Name</Text>
@@ -231,6 +254,6 @@ const styles = StyleSheet.create({
   },
   txt: {
     fontSize: 17,
-    marginLeft:5,
+    marginLeft: 5,
   },
 });

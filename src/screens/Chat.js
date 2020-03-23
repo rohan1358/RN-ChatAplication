@@ -49,7 +49,7 @@ export default class MChats extends React.Component {
   }
 
   componentDidMount() {
-    console.log(this.state.person.name)
+    console.log(this.state.person.name);
     this.keyboardShowListener = Keyboard.addListener(
       isIOS ? 'keyboardWillShow' : 'keyboardDidShow',
       e => this.keyboardEvent(e, true),
@@ -58,6 +58,9 @@ export default class MChats extends React.Component {
       isIOS ? 'keyboardWillHide' : 'keyboardDidHide',
       e => this.keyboardEvent(e, false),
     );
+    const message = User.phone;
+    const pesan = JSON.parse(message);
+    console.log(pesan.pin);
     this.state.dbRef
       .child(User.phone)
       .child(this.state.person.phone)

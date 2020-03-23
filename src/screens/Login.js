@@ -52,7 +52,7 @@ export default class Login extends Component {
           valueDB.forEach(res => {
             var data = res.toJSON();
 
-            if (data.username === username && data.password == password) {
+            if (data.username === username && data.password === password) {
               AsyncStorage.setItem('dataUser', JSON.stringify(data));
               this.props.navigation.navigate('Home');
               return;
@@ -108,7 +108,7 @@ export default class Login extends Component {
             placeholder="password"
             onChangeText={password => this.setState({password})}
           />
-          <View style={styles.btn} style={{marginTop:50}}>
+          <View style={styles.btn} style={{marginTop: 50}}>
             <Button
               title="Login"
               onPress={() =>
@@ -116,8 +116,8 @@ export default class Login extends Component {
               }
             />
           </View>
-          <View style={{alignItems:"center", marginTop:20}}>
-            <Text style={{fontSize:20, fontWeight:"bold"}}>Or</Text>
+          <View style={{alignItems: 'center', marginTop: 20}}>
+            <Text style={{fontSize: 20, fontWeight: 'bold'}}>Or</Text>
           </View>
           <View style={styles.btn}>
             <Button

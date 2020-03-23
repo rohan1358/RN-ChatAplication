@@ -19,7 +19,7 @@ export default class AuthLoadingScreen extends React.Component {
 
   UNSAFE_componentWillMount() {
     // Your web app's Firebase configuration
-    var firebaseConfig = {
+    const firebaseConfig = {
       apiKey: 'AIzaSyDdX17Bdz6hxzFTmesYdgyt32AlfuyMWLo',
       authDomain: 'week6-316c7.firebaseapp.com',
       databaseURL: 'https://week6-316c7.firebaseio.com',

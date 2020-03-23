@@ -16,7 +16,7 @@ import Logo from '../image/chat.png';
 import firebase from 'firebase';
 
 import User from '../../User';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+// import {TouchableOpacity} from 'react-native-gesture-handler';
 // import { Header } from 'react-native/Libraries/NewAppScreen';
 
 class Login extends Component {
