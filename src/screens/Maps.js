@@ -19,7 +19,7 @@ import {View, StyleSheet} from 'react-native';
 const styles = StyleSheet.create({
   container: {
     ...StyleSheet.absoluteFillObject,
-    height: 400,
+    height: 630,
     width: 400,
     justifyContent: 'flex-end',
     alignItems: 'center',

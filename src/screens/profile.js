@@ -156,16 +156,14 @@ export default class profile extends Component {
         </View>
         <View style={styles.header}>
           <View style={styles.img}>
-            <TouchableOpacity onPress={() => this.image()}>
-              <Thumbnail large source={this.state.avatarSource} />
-            </TouchableOpacity>
+              <Thumbnail large source={require('../image/alpha.jpg')} />
           </View>
         </View>
         <View>
           <View style={styles.name}>
             <View style={styles.tmbname}>
               <TouchableOpacity onPress={() => this.image()}>
-                <Thumbnail small source={this.state.avatarSource} />
+                <Thumbnail small source={require('../../assests/person.png')} />
               </TouchableOpacity>
             </View>
             <View>
